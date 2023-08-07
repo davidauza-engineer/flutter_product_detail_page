@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'location_detail.dart';
+import 'models/location.dart';
+import 'mocks/mock_location.dart';
 
 void main() {
-  return runApp(const MaterialApp(home: LocationDetail()));
+  final Location mockLocation = MockLocation.fetchAny();
+  return runApp(MaterialApp(home: LocationDetail(mockLocation)));
 }
