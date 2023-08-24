@@ -3,15 +3,29 @@ import 'models/location.dart';
 import 'styles.dart';
 import 'mocks/mock_location.dart';
 
-class LocationDetail extends StatelessWidget {
+class LocationDetail extends StatefulWidget {
   final int locationID;
 
   const LocationDetail(this.locationID, {super.key});
 
   @override
-  Widget build(BuildContext context) {
-    var location = MockLocation.fetch(locationID);
+  createState() => _LocationDetailState(locationID);
+}
 
+class _LocationDetailState extends State<LocationDetail> {
+  final int locationID;
+  Location location = Location.blank();
+
+  _LocationDetailState(this.locationID);
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
             title: Text(location.name, style: Styles.navBarTitle),
@@ -22,6 +36,15 @@ class LocationDetail extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: _renderBody(context, location),
         )));
+  }
+
+  _loadData() async {
+    final location = await Location.fetchByID(locationID);
+    if (mounted) {
+      setState(() {
+        this.location = location;
+      });
+    }
   }
 
   List<Widget> _renderBody(BuildContext context, Location location) {
@@ -54,9 +77,12 @@ class LocationDetail extends StatelessWidget {
   }
 
   Widget _bannerImage(String url, double height) {
-    return Container(
-      constraints: BoxConstraints.tightFor(height: height),
-      child: Image.network(url, fit: BoxFit.fitWidth),
-    );
+    if (url.isNotEmpty) {
+      return Container(
+        constraints: BoxConstraints.tightFor(height: height),
+        child: Image.network(url, fit: BoxFit.fitWidth),
+      );
+    }
+    return Container();
   }
 }
