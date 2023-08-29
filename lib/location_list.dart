@@ -28,21 +28,24 @@ class _LocationListState extends State<LocationList> {
         title: const Text('Locations', style: Styles.navBarTitle),
         centerTitle: false,
       ),
-      body: Column(
-        children: [
-          renderProgressBar(context),
-          Expanded(
-            child: renderListView(context),
-          ),
-        ],
+      body: RefreshIndicator(
+        onRefresh: _loadData,
+        child: Column(
+          children: [
+            renderProgressBar(context),
+            Expanded(
+              child: renderListView(context),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  _loadData() async {
+  Future<void> _loadData() async {
     if (mounted) {
       setState(() => _loading = true);
-      Timer(const Duration(milliseconds: 8000), () async {
+      Timer(const Duration(milliseconds: 3000), () async {
         final locations = await Location.fetchAll();
         setState(() {
           _locations = locations;
