@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'models/location.dart';
 import 'styles.dart';
@@ -12,6 +13,7 @@ class LocationList extends StatefulWidget {
 
 class _LocationListState extends State<LocationList> {
   List<Location> _locations = [];
+  bool _loading = false;
 
   @override
   void initState() {
@@ -26,19 +28,42 @@ class _LocationListState extends State<LocationList> {
         title: const Text('Locations', style: Styles.navBarTitle),
         centerTitle: false,
       ),
-      body: ListView.builder(
-          itemCount: _locations.length, itemBuilder: _listViewItemBuilder),
+      body: Column(
+        children: [
+          renderProgressBar(context),
+          Expanded(
+            child: renderListView(context),
+          ),
+        ],
+      ),
     );
   }
 
   _loadData() async {
-    final locations = await Location.fetchAll();
-
     if (mounted) {
-      setState(() {
-        _locations = locations;
+      setState(() => _loading = true);
+      Timer(const Duration(milliseconds: 8000), () async {
+        final locations = await Location.fetchAll();
+        setState(() {
+          _locations = locations;
+          _loading = false;
+        });
       });
     }
+  }
+
+  Widget renderProgressBar(BuildContext context) {
+    return _loading
+        ? const LinearProgressIndicator(
+            value: null,
+            backgroundColor: Colors.white,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.grey))
+        : Container();
+  }
+
+  Widget renderListView(BuildContext context) {
+    return ListView.builder(
+        itemCount: _locations.length, itemBuilder: _listViewItemBuilder);
   }
 
   Widget _listViewItemBuilder(BuildContext context, int index) {
