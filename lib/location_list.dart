@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'components/location_tile.dart';
 import 'models/location.dart';
-import 'styles.dart';
 import 'location_detail.dart';
+import 'styles.dart';
+
+const listItemHeight = 245.0;
 
 class LocationList extends StatefulWidget {
   const LocationList({super.key});
@@ -71,30 +74,43 @@ class _LocationListState extends State<LocationList> {
 
   Widget _listViewItemBuilder(BuildContext context, int index) {
     final Location currentLocation = _locations[index];
-    return ListTile(
-        contentPadding: const EdgeInsets.all(10.0),
-        leading: _itemThumbnail(currentLocation),
-        title: _itemTitle(currentLocation),
-        onTap: () => _navigateToLocationDetail(context, currentLocation.id));
-  }
-
-  Widget _itemThumbnail(Location location) {
-    Image? image;
-    try {
-      image = Image.network(location.url, fit: BoxFit.fitWidth);
-    } catch (e) {
-      print("could not load image ${location.url}");
-    }
-    return Container(
-        constraints: const BoxConstraints.tightFor(width: 100.0), child: image);
-  }
-
-  Widget _itemTitle(Location location) {
-    return Text(location.name, style: Styles.textDefault);
+    return GestureDetector(
+      onTap: () => _navigateToLocationDetail(context, currentLocation.id),
+      child: SizedBox(
+          height: listItemHeight,
+          child: Stack(children: [
+            _tileImage(currentLocation.url, MediaQuery.of(context).size.width,
+                listItemHeight),
+            _tileFooter(currentLocation)
+          ])),
+    );
   }
 
   void _navigateToLocationDetail(BuildContext context, int locationID) {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => LocationDetail(locationID)));
+  }
+
+  Widget _tileImage(String url, double width, double height) {
+    Image? image;
+    try {
+      image = Image.network(url, fit: BoxFit.cover);
+    } catch (e) {
+      print("could not load image $url");
+    }
+    return Container(constraints: const BoxConstraints.expand(), child: image);
+  }
+
+  Widget _tileFooter(Location location) {
+    final info = LocationTile(location: location, darkTheme: true);
+    final overlay = Container(
+        padding: const EdgeInsets.symmetric(
+            vertical: 5.0, horizontal: Styles.horizontalPaddingDefault),
+        decoration: BoxDecoration(color: Colors.black.withOpacity(0.5)),
+        child: info);
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [overlay]);
   }
 }

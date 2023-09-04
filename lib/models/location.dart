@@ -12,15 +12,25 @@ class Location {
   final int id;
   final String name;
   final String url;
+  final String userItinerarySummary;
+  final String tourPackageName;
   final List<LocationFact> facts;
 
   Location(
       {required this.id,
       required this.name,
       required this.url,
+      required this.userItinerarySummary,
+      required this.tourPackageName,
       required this.facts});
 
-  Location.blank(): id = 0, name = '', url = '', facts = [];
+  Location.blank()
+      : id = 0,
+        name = '',
+        url = '',
+        userItinerarySummary = '',
+        tourPackageName = '',
+        facts = [];
 
   factory Location.fromJson(Map<String, dynamic> json) =>
       _$LocationFromJson(json);
@@ -32,7 +42,7 @@ class Location {
     final response = await http.get(uri);
 
     if (response.statusCode != 200) {
-      throw(response.body);
+      throw (response.body);
     }
 
     List<Location> list = [];
@@ -50,7 +60,7 @@ class Location {
     final response = await http.get(uri);
 
     if (response.statusCode != 200) {
-      throw(response.body);
+      throw (response.body);
     }
 
     final Map<String, dynamic> itemMap = json.decode(response.body);

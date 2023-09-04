@@ -6,6 +6,8 @@ class MockLocation extends Location {
       {required super.id,
       required super.name,
       required super.url,
+      required super.userItinerarySummary,
+      required super.tourPackageName,
       required super.facts});
 
   static final List<Location> items = [
@@ -14,6 +16,8 @@ class MockLocation extends Location {
         name: 'Arashiyama Bamboo Grove',
         url:
             'https://cdn-images-1.medium.com/max/2000/1*vdJuSUKWl_SA9Lp-32ebnA.jpeg',
+        userItinerarySummary: '',
+        tourPackageName: '',
         facts: <LocationFact>[
           LocationFact(
               title: 'Summary',
@@ -29,6 +33,8 @@ class MockLocation extends Location {
         name: 'Mount Fuji',
         url:
             'https://img3.goodfon.ru/original/1920x1080/a/a5/fuji-peizazh-iaponiia-gora-tsvety-nebo.jpg',
+        userItinerarySummary: '',
+        tourPackageName: '',
         facts: <LocationFact>[
           LocationFact(
               title: 'Summary',
@@ -44,6 +50,8 @@ class MockLocation extends Location {
         name: 'Kiyomizu-dera',
         url:
             'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Kiyomizu-dera_in_Kyoto-r.jpg/800px-Kiyomizu-dera_in_Kyoto-r.jpg',
+        userItinerarySummary: '',
+        tourPackageName: '',
         facts: <LocationFact>[
           LocationFact(
               title: 'Summary',
@@ -59,6 +67,8 @@ class MockLocation extends Location {
         name: 'Kinkaku-ji',
         url:
             'https://www.asisbiz.com/Japan/Kinkaku-ji/images/0-Postcards-Kinkaku-ji-Winter.jpg',
+        userItinerarySummary: '',
+        tourPackageName: '',
         facts: <LocationFact>[
           LocationFact(
               title: 'Summary',
@@ -73,6 +83,8 @@ class MockLocation extends Location {
         id: 5,
         name: 'Odaiba',
         url: 'https://www.yhunter.ru/wp-content/uploads/2015/06/DSC1876.jpg',
+        userItinerarySummary: '',
+        tourPackageName: '',
         facts: <LocationFact>[
           LocationFact(
               title: 'Summary',
